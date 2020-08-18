@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!--  namespace p(Property 설정 이후의 방법 프로퍼티(세터) 설정의 간편한 방법 -->
+<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+	p:driverClassName="oracle.jdbc.driver.OracleDriver"
+	p:url="jdbc:oracle:thin:@Localhost:1521:xe"
+	p:username="hr"
+	p:password="hr">
+</bean>
+<bean id="sqlSessionFactory"  class="org.mybatis.spring.SqlSessionFactoryBean"
+	p:dataSource-ref="dataSource"
+	p:configLocation="classpath:mybatis_config.xml">
+</bean>
+<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg ref="sqlSessionFactory"></constructor-arg>
+</bean>
+<bean id="teamDao" class="dao.TeamDaoImpl"
+	p:session-ref="sqlSession"> <!--  객체주입 : ref로 호출 해야함-->
+</bean>
+<bean id="selectTeamUi" class="ui.SelectTeamUi"
+	p:teamDao-ref="teamDao">
+</bean>
+<bean id="menuUi" class="ui.MenuUi" 
+	p:selectTeamUi-ref="selectTeamUi">
+</bean>
+</beans>
+

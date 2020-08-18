@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fruits">
+<select id="getItemList" resultType="model.Fruit">
+select * from my_fruits
+</select>
+<select id="getItem" resultType="model.Fruit" parameterType="Integer">
+select * from my_fruits where item_id=#{item_id}
+</select>
+<select id="putItem" parameterType="model.Fruit">
+insert into my_fruits values(#{item_id},#{item_name},#{price},#{description},
+#{picture_url})
+</select>
+<delete id="deleteItem" parameterType="Integer">
+delete from my_fruits where item_id=#{item_id}
+</delete>
+<update id="updateItem" parameterType="model.Fruit">
+update my_fruits set item_name=#{item_name}, price=#{price}, 
+description=#{description}, picture_url=#{picture_url}
+where item_id=#{item_id}
+</update>
+<select id="findItem" resultType="model.Fruit" parameterType="String">
+select * from my_fruits where item_name like '%' || #{item_name} || '%' 
+
+</select>
+</mapper>

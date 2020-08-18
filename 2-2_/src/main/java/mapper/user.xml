@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<select id="getTeam" resultType="model.Team" parameterType="Integer">
+		select team_id, team_name from baseball_team
+		where team_id=#{id}
+	</select>
+	<insert id="putPlayer" parameterType="model.Player">
+		insert into baseball_player(player_id, team_id,player_name,reg_date)
+		values(#{player_id},#{team_id},#{player_name},'2020/07/28')
+	</insert>
+	<select id="getTeamList" resultType="model.Team">
+		select team_id, team_name from baseball_team
+	</select>
+	
+</mapper>

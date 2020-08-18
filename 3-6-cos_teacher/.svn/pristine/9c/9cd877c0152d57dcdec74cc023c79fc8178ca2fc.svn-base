@@ -1,0 +1,10 @@
+itemMenu.title=관리자 - 상품 목록 화면
+itemEdit.title=관리자 - 상품 편집 화면
+itemAdd.title=관리자 - 상품 등록 화면
+itemDelete.title=관리자 - 상품 삭제 화면
+itemEditForm.item.error=상품정보에 문제가 있습니다.
+itemEditForm.item.itemId=상품ID
+itemEditForm.item.itemName=상품명
+itemEditForm.item.price=가격
+itemEditForm.item.description=설명
+itemEditForm.item.pictureUrl=파일명

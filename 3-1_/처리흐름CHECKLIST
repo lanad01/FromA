@@ -1,0 +1,20 @@
+MVC 흐름.
+1. 웹 프로젝트 생성이 되면 web.xml에 DispatchSErvlet
+
+-----------------------------------------------
+DispatcherServlet 
+Servlet Container에서 HTTP프로토콜을 통해 들어오는 모든 요청을
+ 프레젠테이션 계층의 제일 앞에 둬서 중앙집중식으로 처리해주는 프론트 컨트롤러(Front Controller)
+-----------------------------------------------
+
+-MyBatis를 xml을 사용하여 작성하는 과정
+1. 테이블 생성 및 개발 준비
+->  DB에 테이블 생성 & 도메인 객체(member)를 위한 클래스 설계 (MemberVO)
+2. DAO Interface 생성
+->실제로 실행해야하는 작업을 인터페이스로 정의 (MemberDAO)
+3.Xml Mapper 작성
+->SQL문이 모여있는 Mapper xml 작성, MyBatis가 XML  Mapper를 인식할 수 있도록 root-context.xml- sqlSessionFactory-mapperLocations속성을 추가한다. DAO에서 정의된 메소드 이름을  기초로 작성한다.
+4. SqlSessionTemplate 설정
+-> SqlSessionTemplate은 MyBatis의 SqlSession 인터페이스를 구현한 클래스로 기본적인 트랜잭션의 관리나 쓰레드 처리의 안전성을 보장하고,  DB의 연결과 종료를 담당함
+5. 구현 클래스 작성 (MemberDaoImpl)
+-> 스프링에서 DAO가 있는 패키지를 스캔할 수 있도록 root-context.xml에 context package 에 dao가 있는 패키지를 추가한다.

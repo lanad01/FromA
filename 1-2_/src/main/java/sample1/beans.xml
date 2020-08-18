@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	
+	<bean id="outputter" class="sample1.FileOutputter">
+		<property name="filePath" value="out.txt"></property>
+	</bean>
+	<bean class="sample1.MessageBeanImpl" id="messageBean">
+		<constructor-arg value="김창민"></constructor-arg><!--  생성자를 통한 주입 -->
+		<property name="greeting" value="잘생겻네여"></property>
+		<property name="outputter" ref="outputter"></property> <!--  객체일 경우는 ref에 넣는다 -->
+	</bean>
+</beans>

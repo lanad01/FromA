@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	        <!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
+	        <property name="prefix" value="/WEB-INF/jsp/"/>
+	        <property name="suffix" value=".jsp"/>
+	</bean>
+	
+	<!--  DB관련 객체 맵핑  -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+	p:driverClassName="oracle.jdbc.driver.OracleDriver"
+	p:url="jdbc:oracle:thin:@Localhost:1521:xe"
+	p:username="hr"	p:password="hr">
+	</bean>
+	<bean id="sqlSessionFactory"  class="org.mybatis.spring.SqlSessionFactoryBean"
+	p:dataSource-ref="dataSource"
+	p:configLocation="classpath:config/mybatis_config.xml">
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	<!-- / DB관련 객체 맵핑 종료 -->
+	<!--  DB 액세스 객체 맵핑  -->
+	<bean id="userDao" class="dao.UserDaoImpl"
+	p:session-ref="sqlSession"></bean>
+	<!--  DB 액세스 객체 맵핑 종료 -->
+	<bean id="LoginFormController" class="controller.LoginFormController"
+	p:userDao-ref="userDao"
+	p:loginValidator-ref="loginValidator"></bean>
+	<!-- Controller 맵핑 시작 -->
+	<bean id="urlHandler" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<value>/login.html=LoginFormController</value>
+<!--  login.jsp의 form:frm action="login.html"이 보내는 login.html이 왔을 때
+	서블릿이었으면 서블릿으로 갔겠지만 여기선 frontController인 	LoginController로 가야한다
+	여기서 setUpForm 메소드에 맵핑되는 것이다. setUpForm 결과값이 login이었고 이하 나머지 파일은 
+    viewResolver로 경로를 설정해준다.-->
+		</property>	
+	</bean>	
+	<!--  Controller 맵핑 종료 -->
+	<bean id="messageSource" 
+	class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames"> 
+			<list> <value> changmin </value></list>
+<!--프로퍼티즈파일 이름 (언어코드 제외/확장자 제외) -->
+		</property>
+	</bean>
+	<bean id="loginValidator" class="util.LoginValidator"
+	></bean>
+</beans>

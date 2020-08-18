@@ -1,0 +1,13 @@
+어노테이션
+@Null Null여부 검사
+@NotNull Null이 아닌지 검사
+@AssertTrue true인지 검사
+@AssertFalse False인지 검사
+@Min 지정한 값보다 큰 지 검사
+@Max 지정한 값보다 작은 지 검사
+@Digits 지정한 자릿수 이내인지 검사
+@Email 유효한 이메일 형식인지 검사
+@Range 지정한 범위의 숫자인지 검사
+@NotEmpty 빈 문자가 아닌지 검사
+@Past 현재 날짜보다 가거의 날짜인지 검사
+@Future 현재 날짜보다 미래의 날짜인지 검사

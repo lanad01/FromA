@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="messageBeanKR" class="sample3.Korean"></bean>
+	<bean id="messageBeanEN" class="sample3.English"></bean>
+</beans>
+<!--  BeansConfiguration을 통해서 환경설정을 한다 -->

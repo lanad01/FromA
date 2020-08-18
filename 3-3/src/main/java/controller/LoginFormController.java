@@ -1,0 +1,80 @@
+package controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import dao.UserDao;
+import model.User;
+
+@Controller
+public class LoginFormController {
+	private UserDao userDao;
+	private Validator loginValidator;
+	public void setLoginValidator(Validator loginValidator) {
+		this.loginValidator = loginValidator;
+	}
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+	@ModelAttribute
+	public User setUp() {
+		return new User();
+	}
+	@RequestMapping(method=RequestMethod.GET)
+	public String setUpForm() {
+		return "login";//객체를 주입할 JSP이름
+	}
+	@RequestMapping(method=RequestMethod.POST)
+	public ModelAndView onSubmit(User user, BindingResult br){
+		//1.유효성 검사(계정 및 암호가 입력되었는지 여부 검사)를 한다.
+		//->유효성 검사는 별도의 객체(Validator)가 진행한다.
+		this.loginValidator.validate(user, br);//유효성검사 진행
+		ModelAndView mav = new ModelAndView();
+		if(br.hasErrors()) {//유효성 검사결과 오류(메세지)가 있는 경우
+			//로그인 화면을 그대로 유지(단,에러메세지가 포함된 로그인 화면)
+			mav.getModel().putAll(br.getModel());
+			return mav;
+		}
+		//2.유효성 검사를 통과한 경우, 계정과 암호로 DB에서 검색한다.
+		try {
+			User loginUser = userDao.findByIdAndPwd(user);//DB에서 조회
+			if(loginUser != null) {//로그인 성공
+				mav.setViewName("loginSuccess");//출력될 JSP 이름
+				mav.addObject("loginUser",loginUser);//조회된 객체 주입
+				return mav;
+			}else {//로그인 실패
+				br.reject("error.login.user");//출력될 에러메세지 주입
+				mav.getModel().putAll(br.getModel());
+				return mav;//에러 메세지를 포함한 login.jsp 출력
+			}
+		}catch(Exception e) {
+			br.reject("error.login.user");//출력될 에러메세지 주입
+			mav.getModel().putAll(br.getModel());
+			return mav;//에러 메세지를 포함한 login.jsp 출력
+		}
+		//3.검색결과에 따라 로그인 성공 JSP(loginSuccess.jsp)를 출력한다.
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

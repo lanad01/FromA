@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="targetBean" class="sample3.MessageBeanImpl"> <!--  프로그램  -->
+		<property name="name" value="김창민"></property>
+	</bean>
+	<bean id="myAdvice" class="sample3.AfterMyAdvice"></bean>
+	<!--  어드바이저 조인포인트 포인트컷의 세가지 객체로 이루어져 있다. 따라서 bean 선언 다해야한다 -->
+	<bean id="defaultAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="myAdvice"></property>
+		<property name="pointcut"> <!--  조인포인트의 집합 : pointcut 따라서 찾아야한다 -->
+			<bean class="org.springframework.aop.support.JdkRegexpMethodPointcut">
+				<property name="pattern"><!--  이 패턴에 일치하는 것에 모두 조인포인트를 배치한다 -->
+					<value>.*sayHello.*</value><!-- 메소드이름 sayHello는 반드시 가지고 있어야한다 -->
+					<!--  . : 줄바꿈을 제외한 모든 문자 
+						  * : 앞의 항목이 0번 이상 반복
+						  예) .*sayHello.*
+						  abcsayHelloabc => 앞뒤로 줄바꿈이 있어서는 안됨.  						
+					-->
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<!--  어드바이저와 bean을 합쳐주는 proxy -->
+	<bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="targetBean"></property>
+		<property name="interceptorNames">
+			<list>
+				<value>defaultAdvisor</value>
+			</list>
+		</property>
+	</bean>
+</beans>

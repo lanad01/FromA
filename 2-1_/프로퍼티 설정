@@ -1,0 +1,21 @@
+
+<!-- 	 ㅈ라클 연동 --> 
+<!-- 	<bean id="dataSource" -->
+<!-- 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="driverClassName" -->
+<!-- 			value="oracle.jdbc.driver.OracleDriver"></property> -->
+<!-- 		<property name="url" -->
+<!-- 			value="jdbc:oracle:this:@Localhos:1521:xe"></property> -->
+<!-- 		<property name="username" value="hr"></property> -->
+<!-- 		<property name="password" value="hr"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="sqlSessionFactory" -->
+<!-- 		class="org.mybatis.spring.SqlSessionFactoryBean"> -->
+<!-- 		<property name="dataSource" ref="dataSource"></property>  dataSource는 객체이므로 ref -->
+<!-- 		<property name="configLocation" value="classpath:myBatis_Config.xml"></property> -->
+<!-- 	</bean> -->
+	
+<!-- 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"> -->
+<!-- 		<constructor-arg ref="sqlSessionFactory"></constructor-arg> -->
+<!-- 	</bean> -->

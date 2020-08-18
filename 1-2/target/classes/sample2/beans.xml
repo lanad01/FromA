@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="apple" class="sample2.Apple">
+		<property name="name" value="사과"></property>
+	</bean>
+	<bean id="banana" class="sample2.Banana">
+		<property name="name" value="바나나"></property>
+	</bean>
+	<bean id="kimChangMin" class="sample2.KimChangMin">
+		<property name="name" value="잘생긴 김창민"></property>
+		<property name="item" ref="banana"></property>
+	</bean>
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,31 @@
+3-2,3,4에서 사용한 HandlerMapping객체 - SimpleurlHandlerMapping
+ : 선언방법 : HandlerMapping 객체 선언 부분에서 매핑 정보를 얻음
+ : 객체의 단점 : 메뉴가 많아지면, 컨트롤러가 많아지고 맵핑이 길어진다.
+ 
+3-5에서 사용할 HandlerMapping 객체는 ControllerClassNameHandlerMapping
+매핑방법 : 매핑정보를 직접 적는다 /login.html=loginController처럼 환경설정 파일에 명시하는 것이 아니라
+		입력된 URL에서 매핑정보를 얻는다.
+		ex).../index/...html  => indexController
+		   .../detail/... => DetailController
+		   .../loginform/... => loginFormController
+		
+		Controller의 이름은 다음과 같이 적어줘야한다.
+		예를 들어 url내용이 아래와 같다면 컨트롤러의 이름은 오른쪽과 같다.
+		
+url내용										컨트롤러
+
+/checkout/checkout.html           		CheckoutController
+										CheckOutController
+/userentryform/userEntry.html			UserEntryFormController
+										UserentryformController
+										UserentryFormController
+										UseRentryFormController
+										USERENTRYFORMController
+										USerENTRYFORMController
+										USERENTRYFORMCOntroller는 안됨
+단, 컨트롤로 매핑 url 이름은 반드시 소문자
+
+url											JSP
+/index/index.html						index/index
+/loginform/login.html					loginform/login
+/checkout/checkout.html					checkout/checkout

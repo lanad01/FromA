@@ -1,0 +1,18 @@
+<!--          서블릿에서의 폼                        -->
+<!--  <form action="login" method="post">
+	  <input type="text" name="id">
+	  <input type="password" name="pwd"> -->
+<!--  스프링에서의 폼                 -->
+<!--  <form:form action="login" method="post" modelAttirubute="user">
+	  <form:input path="userId"><br/>
+	  <form:password path="password"/><br/>
+	  <input type="submit" value="로그인">
+	  
+	  form태그의 commandName 또는 modelAttribute에 값을 제공할 객체의 지정은
+	    보통 컨트롤러에서 하게 됩니다.
+	    서블릿에서의 form은 input의 파라미터들이 제각각 action 서블릿으로 전송되지만,
+	    스프링 Form에서는 모델객체가 form에 있는 전부를 포함해서 한번에 컨트롤러로 날아갑니다. 
+	    그 객체의 이름이 modelAttribute인거죠.
+	    여기서는 user라는 객체가 id,password를 가지고 컨트롤러로 날아가겠네요.
+	    훨씬 자바에 가까운 로직구현이라고 할 수 있겠습니다. 
+ -->

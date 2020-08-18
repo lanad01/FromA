@@ -1,0 +1,8 @@
+JSP									Validator
+<form:errors path= id ~~		errors.rejectValue("id","errors.required~~")
+<form:erros path=pwd~~			errors.rejectValue("pwd","errors.required~~")
+
+===============폼 에러 메세지 처리 =====================
+<spring:hasBindErrors name="user">
+ ${errors.globalErrors}  
+ // Validator에서 errors.rejectValue의 내부 값을 출력시키는 구문

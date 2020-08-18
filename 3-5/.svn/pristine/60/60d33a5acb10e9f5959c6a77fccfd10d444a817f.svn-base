@@ -1,0 +1,45 @@
+package logic;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import dao.ItemDao;
+import dao.SaleDao;
+import dao.UserDao;
+import model.Cart;
+import model.ItemSet;
+import model.User;
+@Service
+public class ShoppingImpl implements Shopping {
+	@Autowired
+	private ItemDao itemDao;
+	@Autowired
+	private UserDao userDao;
+	@Autowired
+	private SaleDao saleDao;
+	
+	public void checkout(User user, Cart cart) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public Integer calculateTotal(List<ItemSet> list) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
