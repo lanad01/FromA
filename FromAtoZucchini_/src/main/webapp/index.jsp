@@ -10,8 +10,8 @@
 		<meta charset="utf-8">
 		<title>Welcome</title>
 	</head> 
-	<body>
-		<c:url value="/showMessage.html" var="messageUrl" />
+	<body> 
+		<c:url value="/home/intro.html" var="messageUrl" />
 		<a href="${messageUrl}">Click to enter</a>
 	</body>
 </html>

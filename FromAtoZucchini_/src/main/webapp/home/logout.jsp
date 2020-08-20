@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="Logout.do" method="get">
+<form action="../logout/logout.html" method="get">
 <!-- POST는 서버의 값이나 상태를 바꾸기 위해서 사용합니다. -->
 <!-- GET은 서버에서 어떤 데이터를 가져와서 보여준다거나 하는 용도이지 서버의 값이나 상태등을 바꾸지 않습니다. -->
 안녕하세여? ${sessionScope.LOGIN}<br/>
