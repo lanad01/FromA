@@ -9,33 +9,29 @@ select item_name as name, price from selling_item
 where item_id = #{id}
 </select>
  -->
-<select id="getMatjipCount" resultType="Integer">
-select count(*) from matjip_infor
-</select>
 <select id="getItemId" parameterType="String"
 				resultType="Integer">
 select count(*) from selling_item 
 where item_id = #{id}
 </select>
-<!-- <insert id="putItem" parameterType="model.Item">
+<insert id="putItem" parameterType="model.Item">
 insert into selling_item values(#{item_id},
 #{item_name},#{price},#{info},#{origin})
-</insert>
- --><select id="getItemsCount" resultType="Integer">
+ </insert>
+<select id="getItemsCount" resultType="Integer">
 select count(*) from selling_item
 </select>
-<!-- <select id="getItemDetail" parameterType="String"
-	resultType="model.Item">
+
+<select id="getItemDetail" parameterType="String" resultType="model.Item">
 select * from selling_item where item_id = #{no}
 </select>
- --><!-- <select id="getAllItemsCondition" resultType="model.Item"
-	parameterType="Integer">
-select item_id,item_name,price,origin from
-(select rownum rn,item_id,item_name,price,origin from selling_item)
-where rn > (#{pagenum}-1)*5
-	and rn <![CDATA[<]]> (((#{pagenum}-1)*5)+6)
-</select>
- --><!-- <select id="getAllItems" resultType="model.Item">
+
+ <select id="getAllItemsCondition" resultType="model.Item" 	parameterType="Integer"> 
+ select item_id,item_name,price,origin from 
+(select rownum rn,item_id,item_name,price,origin from selling_item) 
+ where rn > (#{pagenum}-1)*5 and rn <![CDATA[<]]> (((#{pagenum}-1)*5)+6) 
+ </select> 
+ <!-- <select id="getAllItems" resultType="model.Item">
 select * from selling_item
 </select> -->
 <!-- <select id="getMatjip" parameterType="model.Matjip"

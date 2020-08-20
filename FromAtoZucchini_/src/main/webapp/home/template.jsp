@@ -122,8 +122,8 @@ function sportsMenu8(){
 					<a href="template.jsp?BODY=inputGaBaBo.jsp">가위,바위,보 게임</a><br/>
 					<a href="../home/bbsTemplate.html">게시글 쓰기</a><br/>
 					<a href="../read/read.html">게시글 목록</a><br/>
-					<a href="template.jsp?BODY=inputItem.jsp">상품 등록</a><br/>
-					<a href="ItemListServlet">상품 목록</a><br/>
+					<a href="../item/inputItem.html">상품 등록</a><br/>
+					<a href="../item/itemList.html">상품 목록</a><br/>
 					<a href="cart-List">장바구니 보기</a><br/>
 					<br/>
 				</div>
