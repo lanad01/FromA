@@ -37,7 +37,7 @@
 	</bean>
 	
 	<!--  Autowired Component scan -->
-	<context:component-scan base-package="dao,controller"></context:component-scan>
+	<context:component-scan base-package="dao,controller,model"></context:component-scan>
 	<!--  Autowired -->
 	
 	<!--  Mapping -->

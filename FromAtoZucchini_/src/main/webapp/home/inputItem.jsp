@@ -20,7 +20,7 @@
 상품설명 :<br/>
  <form:textarea path="info" rows="5" cols="20"/><br/>
 원산지:<form:input path="origin" maxlength="10"/><br/>
-<input type="submit" value="등록"/><input type="resut" value="취소"/>
+<input type="submit" value="등록"/><input type="reset" value="취소"/>
 
 </form:form>
 </body>

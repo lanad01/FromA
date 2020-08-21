@@ -18,7 +18,9 @@
 	<tr><td>${item.item_id }</td>
 		<td><a href="../item/itemDetail.html?CODE=${item.item_id }">${item.item_name }</a></td>
 		<td>${item.price }</td><td>${item.origin }</td>
-		<td><a href="">장바구니 담기</a></td></tr>
+		<td><a href="" 
+onClick="window.open('../cart/addcart.html?CODE=${item.item_id}','cart','width=400, height=250').focus()">장바구니 담기</a></td></tr>
+<!--  맵핑의 결과가 윈도우 창 cart의 내용이 된다 -->
 	</c:forEach>
 </table>
 <c:forEach var="page" begin="1" end="${PAGE_CNT }">
