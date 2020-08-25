@@ -91,12 +91,11 @@ insert into matjip_infor values(#{no},#{title},
 	insert into my_bbs values(#{seqno},#{title},
 	#{content},#{id},#{register_date})
 	</insert>
-<!-- 	<insert id="insertMember" 
-			parameterType="model.Member">
+ 	<insert id="insertMember" parameterType="model.User">
 	insert into custom_info values(#{id},#{pwd},
 	#{name},#{gender},#{email},#{job},#{address})
 	</insert>
-	<select id="selectMember" 
+<!--	<select id="selectMember" 
 			parameterType="String"
 			resultType="model.Member">
 	select * from custom_info 

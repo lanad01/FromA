@@ -61,10 +61,12 @@ select title, phone from matjip_infor where no = #{no}
 </delete>
 <insert id="putMatjip" parameterType="model.MatjipItem">
 	insert into jjim_matjip values(#{seqno},#{no},#{id})
-</insert>
+</insert> -->
 <select id="getCart" parameterType="String" 
 					resultType="model.CartItem">
-	select * from my_cart where id = #{id}
+	select c.seqno, c.code, c.num, c.id, i.price, i.item_name as name 
+	from my_cart c, selling_item i 
+	where c.code = i.item_id and c.id = #{id}
 </select>
 <select id="getSeqno" resultType="Integer">
 	select max(seqno) from my_cart
@@ -79,7 +81,7 @@ select title, phone from matjip_infor where no = #{no}
 <insert id="putCart" parameterType="model.CartItem">
 	insert into my_cart values(#{seqno},#{code},#{num},#{id})
 </insert>
- --></mapper>
+</mapper>
 
 
 
