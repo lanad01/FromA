@@ -1,0 +1,38 @@
+package dao;
+
+import java.util.List;
+
+import model.Bbs;
+import model.Condition;
+import model.ImageWriting;
+
+public interface WriteDao {
+	// 일반 게시글 관련 메서드
+	Integer getMaxId();//최대 글번호 검색
+	void insertBBS(Bbs bbs);//게시글 삽입
+	
+	// 이미지 게시글 관련 메서드
+	Integer getImageMaxId();//최대 글번호(이미지 글) 검색
+	void insertImage(ImageWriting w);//이미지 글 삽입
+	Integer getImageMaxGrId();//최대 그룹번호(이미지 글) 검색
+	void updateOrderNo(ImageWriting w);//답글의 순서번호 변경
+	Integer getRownum(Integer seqno);//글번호로 일련번호를 검색
+	Integer getTotalImage();//전체 이미지 게시글의 갯수 검색
+	List<ImageWriting> getImageList(Condition c);
+	//일련번호로 해당 페이지에 들만 검색
+	ImageWriting getImageWriting(Integer seqno);//글번호로 이미지글을 검색
+	void deleteImage(Integer id);//글번호로 이미지글 삭제
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

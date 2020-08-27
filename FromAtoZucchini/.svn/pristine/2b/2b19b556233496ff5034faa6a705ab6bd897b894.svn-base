@@ -1,0 +1,220 @@
+package controller;
+
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import dao.WriteDao;
+import model.Condition;
+import model.ImageWriting;
+
+@Controller
+public class ImageController {
+	@Autowired
+	private WriteDao writeDao;
+	
+	@RequestMapping(value="/image/modify.html")
+	public ModelAndView modify(Integer id) {
+		ModelAndView mav = new ModelAndView("home/template");
+		ImageWriting image=writeDao.getImageWriting(id);//글 검색
+		mav.addObject(image);//검색된 결과 주입
+		mav.addObject("BODY","updateForm.jsp");
+		return mav;
+	}
+	
+	@RequestMapping(value="/image/deleteDo.html")
+	public ModelAndView deleteDo(ImageWriting imageWriting) {
+		ImageWriting old = writeDao.getImageWriting(
+				imageWriting.getWriting_id());//기존의 글정보 검색
+		ModelAndView mav = new ModelAndView("home/template");
+		if(old.getPassword().equals(imageWriting.getPassword())) {
+			//기존의 암호와 입력한 암호를 비교해서 동일한 경우
+			writeDao.deleteImage(imageWriting.getWriting_id());//DB에서 삭제
+			mav.addObject("BODY","deleteResult.jsp");
+		}else {
+			//암호가 일치하지 않은 경우
+			mav.addObject(
+				"BODY","deleteResult.jsp?id="+old.getWriting_id());
+		}
+		return mav;
+	}
+	
+	@RequestMapping(value="/image/delete.html")
+	public ModelAndView delete(Integer id) {
+		ModelAndView mav = new ModelAndView("home/template");
+		ImageWriting image = writeDao.getImageWriting(id);
+		mav.addObject(image);//검색된 객체 주입
+		mav.addObject("BODY","deleteForm.jsp");
+		return mav;
+	}
+	
+	@RequestMapping(value="/image/read.html")
+	public ModelAndView read(Integer id) {
+		ModelAndView mav = new ModelAndView("home/template");
+		//id에 있는 글번호 DB에서 해당을 검색한다.
+		ImageWriting image = writeDao.getImageWriting(id);
+		mav.addObject("IMAGE",image);
+		//검색결과를 뷰(imageRead.jsp)로 전달한다.
+		mav.addObject("BODY","imageRead.jsp");
+		return mav;
+	}
+	
+	@RequestMapping(value="/image/writeList.html")
+	public ModelAndView writeList(Integer SEQNO, Integer PAGE_NUM) {
+		//이미지 게시글 목록을 출력하는 메서드
+		if(PAGE_NUM == null) PAGE_NUM = 1;
+		ModelAndView mav = new ModelAndView("home/template");
+		//글번호로 페이지를 찾는다.
+		if(SEQNO != null) {
+			//해당 글번호로 일련번호를 찾는다.(오라클 쿼리)
+			int rownum = writeDao.getRownum(SEQNO);
+			//페이지번호 = 일련번호 / 5;
+			int page = rownum / 5;
+			//if(일련번호 % 5 != 0) 페이지번호++;
+			if( rownum % 5 != 0) page++;
+			//PAGE_NUM = 페이지번호;
+			PAGE_NUM = page;
+		}
+		int currentPage = PAGE_NUM;//현재 페이지 설정
+		int totalPageCount = 0;//페이지 갯수용 변수
+		int startRow = 0; int endRow = 0;//범위 조회를 위한 변수
+		int count = writeDao.getTotalImage();//전체 글 갯수 검색
+		if(count > 0) {
+			//페이지 갯수를 찾는다.
+			totalPageCount = count / 5;
+			if(count % 5 > 0) totalPageCount++;
+			startRow = (currentPage - 1) * 5 + 1;//검색 시작 일련번호
+			endRow = currentPage * 5;//검색 종료 일련번호
+			if(endRow > count) endRow = count;
+			//검색 종료 일련번호가 글 갯수보다 클 수 없으므로,
+			//큰 경우에는 검색 종료 일련번호를 글 갯수로 설정
+		}
+		//해당 페이지에 해당하는 목록을 찾는다.
+		Condition c = new Condition();
+		c.setStartRow(startRow); c.setEndRow(endRow);
+		List<ImageWriting> imageList = writeDao.getImageList(c);
+		mav.addObject("LIST",imageList);//이미지 게시글 목록 저장
+		mav.addObject("COUNT",count);//글의 갯수 저장
+		mav.addObject("STARTROW",startRow);//목록의 시작 일련번호 저장
+		mav.addObject("ENDROW",endRow);//목록의 종료 일련번호 저장
+		mav.addObject("pageCount",totalPageCount);//페이지 수 저장
+		mav.addObject("currentPage",currentPage);//현재 페이지 저장
+		//찾은 목록을 뷰(imageList.jsp)로 전달한다.
+		mav.addObject("BODY","imageList.jsp");
+		return mav;
+	}
+	
+	@RequestMapping(value="/image/write.html")
+	public ModelAndView write(@Valid ImageWriting imageWriting,
+			BindingResult bindingResult, HttpSession session,
+			Integer order_no, Integer group_id, Integer parent_id) {
+		if(bindingResult.hasErrors()) {
+			ModelAndView mav = new ModelAndView("home/template");
+			mav.addObject("BODY","writeForm.jsp");
+			//mav.getModel().putAll(bindingResult.getModel());
+			//스프링 프레임워크의 설계 철학: CoC
+			//Convention Over Configuration : 설정 보다 관례
+			//-> 자주 사용하는 부분들을 관례(기본)으로 정의하고, 생략한다.
+			//-> 만약, 관례를 따르고 싶지 않은 경우에만 설정을 한다.
+			// 특별하게 지정하지 않으면, 기본을 적용한다.
+			return mav;
+		}
+		MultipartFile multiFile = imageWriting.getImagename();//파일을 수신
+		String fileName=null; String path=null;
+		OutputStream os=null;
+		if(multiFile != null) {//폼에 파일이 존재하는 경우
+			fileName=multiFile.getOriginalFilename();//파일이름을 저장
+			ServletContext ctx = session.getServletContext();
+			path = ctx.getRealPath("/upload_img/"+fileName);//절대경로를 찾음
+			try {
+				os = new FileOutputStream(path);//파일로 출력하는 객체 생성
+				BufferedInputStream bis = new BufferedInputStream(
+						multiFile.getInputStream());
+				//업로드 파일로 부터 파일 입력 스트림 객체를 생성
+				byte[] buffer = new byte[8156];//8K크기의 임시저장소 생성
+				int read = 0;//읽은 바이트 수가 저장될 변수
+				while( (read = bis.read(buffer)) > 0) {
+					//bis로 부터 읽음, 읽은 바이트 수가 존재하는 동안 반복
+					os.write(buffer, 0, read);//읽은 내용을 os로 출력
+				}//반복이 끝나면 파일이 생성됨
+				if(os != null) os.close();//사용한 객체 닫음
+				if(bis != null) bis.close();//사용한 객체 닫음
+			}catch(Exception e) {
+				e.printStackTrace();//예외발생시 예외 메세지 출력
+			}
+			imageWriting.setImage_name(fileName);//업로드된 파일이름 설정
+		}
+		//이미지 게시글을 DB(image_reply)에 삽입 -> DAO가 필요하다.
+		//가장 큰 글번호를 찾는다. 왜? +1해서 자동증가하기 위해
+		//->게시글 번호->최대 게시글 번호 + 1(자동 증가)
+		Integer maxId = writeDao.getImageMaxId();
+		if(maxId == null) maxId = 0;
+		if(imageWriting.getParent_id() == null) {//원글인 경우
+			imageWriting.setParent_id(0);//부모글 번호 0
+			imageWriting.setOrder_no(0);//순서번호 0
+			Integer maxGid = writeDao.getImageMaxGrId();
+			if(maxGid == null) maxGid = 0;
+			imageWriting.setGroup_id(maxGid + 1);//그룹번호 자동 증가
+		}else {//답글인 경우
+			imageWriting.setParent_id(parent_id);
+			imageWriting.setGroup_id(group_id);
+			imageWriting.setOrder_no(order_no);
+			//순서번호가 변경할 조건인 경우, 변경작업을 한다.
+			writeDao.updateOrderNo(imageWriting);
+		}
+		imageWriting.setWriting_id(maxId+1);//글번호 자동증가
+		//->게시글 날짜->Calendar객체를 사용해서 오늘 날짜를 획득
+		Calendar today = Calendar.getInstance();
+		int year = today.get(Calendar.YEAR);
+		int mon = today.get(Calendar.MONTH) + 1;
+		int date = today.get(Calendar.DATE);
+		String monS = ""; String dateS = "";//월 두자리, 일 두자리용 변수
+		if(mon < 10) monS = "0"+mon;
+		else monS = mon+"";
+		if(date < 10) dateS = "0"+date;
+		else dateS = date+"";
+		String registerDate = year+"/"+monS+"/"+dateS;
+		imageWriting.setRegister_date(registerDate);
+		writeDao.insertImage(imageWriting);//DB에 이미지 글 삽입
+		ModelAndView mav = new ModelAndView("home/template");
+		mav.addObject("BODY","imageWriteResult.jsp?SEQNO="+(maxId+1));
+		return mav;
+	}
+
+	@RequestMapping(value="/image/writeForm.html")
+	public ModelAndView form(HttpSession session) {
+		ModelAndView mav = new ModelAndView("home/template");
+		String id = (String)session.getAttribute("loginUser");
+		if(id == null) {
+			mav.addObject("BODY","writeFormLogin.jsp");
+		}else {
+			mav.addObject("BODY","writeForm.jsp");
+			mav.addObject(new ImageWriting());//객체 주입
+		}
+		return mav;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
